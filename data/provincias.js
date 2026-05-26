@@ -1,4 +1,4 @@
-const provincias = [
+export const provincias = [
   {
     "parent_code": "0",
     "label": "Andalucía",
