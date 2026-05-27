@@ -7,43 +7,63 @@
     <script type="module" src="MJ_script.js"></script>
 </head>
 <body class="container mt-4">
-    <h1>Comunidades y Ciudades Autónomas de España</h1>
+<h1 class="text-center mb-4">Comunidades y Ciudades Autónomas de España</h1>
 
-    <!-- Ordenacion -->
-    <div class="mb-3">
-        <label>Ordenar por:</label>
-        <select id="criterio-orden" class="form-select w-auto">
-            <option value="nombre">Nombre</option>
-            <option value="poblacion">Población</option>
-        </select>
+<div class="row">
+    <div class="col-4">
+        <!-- Ordenación -->
+        <div class="mb-3">
+            <label>Ordenar por:</label>
+            <select id="criterio-orden" class="form-select">
+                <option value="nombre">Nombre</option>
+                <option value="poblacion">Población</option>
+            </select>
+        </div>
+
+        <!-- Tabla -->
+        <table class="table table-bordered table-hover">
+            <thead class="table-success">
+            <tr>
+                <th>Comunidad / Ciudad Autónoma</th>
+                <th class="text-end">Población total (aprox.)</th>
+            </tr>
+            </thead>
+            <tbody id="lista-comunidades"></tbody>
+        </table>
     </div>
 
-    <div class="mb-3">
-        <ul id="lista-comunidades" class="list-group"></ul>
+    <div class="col-8">
+        <!-- Formulario -->
+        <div id="formulario" class="border rounded p-3">
+            <div class="mb-3">
+                <label class="fw-bold">Comunidad Autónoma:</label>
+                <input type="text" id="comunidad" class="form-control" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="fw-bold">Capital:</label>
+                <input type="text" id="capital" class="form-control" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="fw-bold">Presidente/a:</label>
+                <input type="text" id="presidente" class="form-control"
+                       placeholder="Nombre del presidente/a">
+                <span id="error-msg" style="display:none; color:red">
+                        El campo no puede estar vacío
+                    </span>
+                <span id="exito-msg" style="display:none; color:green">
+                        ¡Guardado correctamente!
+                    </span>
+            </div>
+            <div class="mb-3">
+                <label class="fw-bold">Provincias:</label>
+                <textarea id="provincias" class="form-control" rows="4" readonly
+                          placeholder="Selecciona una comunidad para ver sus provincias."></textarea>
+            </div>
+            <button id="btn-guardar" class="btn btn-primary w-100" disabled>
+                Guardar cambios en el Presidente/a
+            </button>
+        </div>
     </div>
-
-    <!-- Formulario -->
-    <div id="formulario" style="display:none">
-        <label>Comunidad Autónoma:</label>
-        <input type="text" id="comunidad" class="form-control mb-2" readonly>
-
-        <label>Capital: </label>
-        <input type="text" id="capital" class="form-control mb-2" readonly>
-
-        <label>Presidente/a:</label>
-        <input type="text" id="presidente" class="form-control mb-2">
-        <span id="error-msg" style="display:none; color:red">El campo no puede estar vacío</span>
-        <span id="exito-msg" style="display:none; color:green">¡Guardado correctamente!</span>
-
-
-        <label>Provincias:</label>
-        <input type="text" id="provincias" class="form-control mb-2" readonly>
-
-
-        <button id="guardar" class="btn btn-primary mt-2" disabled>
-            Guardar cambios en el Presidente/a
-        </button>
-    </div>
-
+</div>
 </body>
 </html>
