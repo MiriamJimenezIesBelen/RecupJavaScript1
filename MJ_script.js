@@ -13,7 +13,6 @@ function ordenarComunidades(lista, criterio) {
 }
 
 
-
 function rellenarLista(lista) {
     const tbody = document.getElementById("lista-comunidades");
 
@@ -24,7 +23,7 @@ function rellenarLista(lista) {
             <td class="text-end">${c.poblacion_total.toLocaleString("es-ES")}</td>
         </tr>
     `).join("");
-    // Une todas las filas generadas en un oslo string de texto
+    // Une todas las filas generadas en un solo string de texto
 
     // Selecciona todas las filas creadas y recorre cada una
     tbody.querySelectorAll("tr").forEach(tr => {
@@ -34,9 +33,9 @@ function rellenarLista(lista) {
 }
 
 
-// Recibe el nombre de la comunida clickeada y el elemento tr
+// Recibe el nombre de la comunidad clickeada y el elemento tr
 function seleccionar(nombre, trElemento) {
-    // Quita el resaltado y  lo añade solo a la fila clickeada
+    // Quita el resaltado y lo añade solo a la fila clickeada
     document.querySelectorAll("#lista-comunidades tr")
         .forEach(tr => tr.classList.remove("table-primary", "fw-bold"));
     trElemento.classList.add("table-primary", "fw-bold");
@@ -45,6 +44,15 @@ function seleccionar(nombre, trElemento) {
     cargarFormulario(comunidadSeleccionada);
 }
 
+
+function cargarPresidentesGuardados() {
+    comunidades.forEach(c => {
+        const guardado = localStorage.getItem("presidente_" + c.nombre);
+        if (guardado !== null) {
+            c.presidente = guardado; // Sobreescribe con el valor guardado
+        }
+    });
+}
 
 
 function cargarFormulario(comunidad) {
@@ -59,26 +67,30 @@ function cargarFormulario(comunidad) {
 }
 
 
-
 function actualizarBoton() {
-    // Si el input esta relleno activa el boton
-    const input = document.getElementById("presidente");
-    document.getElementById("btn-guardar").disabled = input.value.trim() === "";
+    // El botón siempre está activo, la validación se hace al hacer click
+    document.getElementById("btn-guardar").disabled = false;
 }
 
 
-
 document.addEventListener("DOMContentLoaded", () => {
-    // Ordena principalmetne por nombre y pinta la tabla
+
+    cargarPresidentesGuardados();
+
+    // Ordena principalmente por nombre y pinta la tabla
     rellenarLista(ordenarComunidades(comunidades, "nombre"));
 
-    // Cada vez que cambia el select, repinta la tabla con el nuevo orden. e.target.value es  el valor de la opción que se ha elegido
+    // Cada vez que cambia el select, repinta la tabla con el nuevo orden. e.target.value es el valor de la opción que se ha elegido
     document.getElementById("criterio-orden").addEventListener("change", e => {
         rellenarLista(ordenarComunidades(comunidades, e.target.value));
     });
 
-    // Cada letra que se escribe en el campo presidente activa actualizarBoton para habilitar o deshabilitar el botón en tiempo real
-    document.getElementById("presidente").addEventListener("input", actualizarBoton);
+    // Cada letra que se escribe en el campo presidente quita el error y actualiza el botón
+    document.getElementById("presidente").addEventListener("input", () => {
+        document.getElementById("error-msg").style.display = "none";
+        document.getElementById("presidente").classList.remove("is-invalid");
+        actualizarBoton();
+    });
 
     // Cuando pulsa guardar, comprueba si el campo está vacío, muestra error o éxito, y guarda el cambio
     document.getElementById("btn-guardar").addEventListener("click", () => {
@@ -87,12 +99,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (valor === "") {
             document.getElementById("error-msg").style.display = "block";
+            input.classList.add("is-invalid"); // pone el borde rojo del input
             return;
         }
 
         document.getElementById("error-msg").style.display = "none";
+        input.classList.remove("is-invalid"); // quita el borde rojo
         // Actualiza el objeto de la comunidad en el array con el nuevo nombre del presidente
         comunidadSeleccionada.presidente = valor;
+
+        // Guarda el presidente en localStorage para que persista
+        localStorage.setItem("presidente_" + comunidadSeleccionada.nombre, valor);
 
         // Muestra el mensaje de éxito en verde, espera 4 segundos y luego oculta el mensaje
         const exito = document.getElementById("exito-msg");
