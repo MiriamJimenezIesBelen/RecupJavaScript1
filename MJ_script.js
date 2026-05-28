@@ -1,4 +1,4 @@
-import { comunidades } from "./data/comunidades.js";
+import { ccaa as comunidades } from "./data/ccaa.js";
 
 // Guarda la comunidad en la q el usuario a hecho click
 let comunidadSeleccionada = null;
@@ -60,7 +60,7 @@ function cargarFormulario(comunidad) {
     document.getElementById("capital").value = comunidad.capital;
     document.getElementById("presidente").value = comunidad.presidente;
     // provincias es un array, se muestra una por línea
-    document.getElementById("provincias").value = comunidad.provincias.join("\n");
+    document.getElementById("provincias").value = comunidad.provincias.map(p => p.nombre).join("\n");
     document.getElementById("error-msg").style.display = "none";
     document.getElementById("exito-msg").style.display = "none";
     actualizarBoton();
